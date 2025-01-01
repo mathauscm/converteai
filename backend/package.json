@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "node src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
@@ -12,9 +12,14 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Conversor simples de PDF para DOCX usando docx@9.x e pdf-parse (ESM)",
+  "type": "module",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "docx": "^9.1.0",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "multer": "^1.4.5-lts.1",
+    "pdf-parse": "^1.0.7"
   }
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './styles/App.css';
+import axios from 'axios';
 
 import { uploadPdf } from './services/api'; // Importe a função
 
@@ -8,23 +9,40 @@ function App() {
     const [responseMessage, setResponseMessage] = useState('');
 
     const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+        const selectedFile = e.target.files[0];
+        if (selectedFile.type !== "application/pdf") {
+            setResponseMessage("Apenas arquivos PDF são aceitos.");
+            return;
+        }
+        setFile(selectedFile);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setResponseMessage('Uploading and converting...');
+
+        if (!file) {
+            setResponseMessage("Por favor, selecione um arquivo antes de enviar.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
 
         try {
-            const response = await uploadPdf(file); // Use a função aqui
+            const response = await axios.post("https://converteai.io/backend/upload", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
             setResponseMessage(
-                `Conversion complete! <a href="${response.data.downloadUrl}" target="_blank">Download here</a>`
+                `Upload realizado com sucesso! <a href="${response.data.downloadUrl}" target="_blank">Baixar arquivo</a>`
             );
         } catch (error) {
-            console.error(error);
-            setResponseMessage('Failed to connect to the server. Please try again later.');
+            console.error("Erro no upload:", error);
+            setResponseMessage("Erro ao realizar o upload. Verifique o arquivo e tente novamente.");
         }
-    };
+    }
+
 
     return (
         <div className="App">
@@ -49,7 +67,7 @@ function App() {
                 </section>
             </main>
             <footer>
-                <p>© 2024 Converte AI - Todos os direitos reservados.</p>
+                <p>© 2024 mathaus.dev </p>
             </footer>
         </div>
     );
