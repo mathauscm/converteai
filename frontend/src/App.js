@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import './styles/App.css';
 import axios from 'axios';
 
-import { uploadPdf } from './services/api'; // Importe a função
-
 function App() {
     const [file, setFile] = useState(null);
     const [responseMessage, setResponseMessage] = useState('');
@@ -29,7 +27,8 @@ function App() {
         formData.append("file", file);
 
         try {
-            const response = await axios.post("https://converteai.io/backend/upload", formData, {
+            // Alterar URL para o backend na VPS
+            const response = await axios.post("https://converteai.io/upload", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -39,10 +38,12 @@ function App() {
             );
         } catch (error) {
             console.error("Erro no upload:", error);
-            setResponseMessage("Erro ao realizar o upload. Verifique o arquivo e tente novamente.");
+            setResponseMessage(
+                error.response?.data?.message || 
+                "Erro ao realizar o upload. Verifique o arquivo e tente novamente."
+            );
         }
-    }
-
+    };
 
     return (
         <div className="App">

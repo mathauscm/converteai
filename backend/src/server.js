@@ -3,7 +3,7 @@ import cors from 'cors';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
-import helmet from 'helmet'; // Proteção adicional para o servidor
+import helmet from 'helmet';
 import { extractPdf } from './app.js';
 import { createWordDocument } from './word.js';
 
@@ -12,18 +12,21 @@ const app = express();
 // Middleware de segurança
 app.use(helmet());
 
-// Configurar CORS
+// Configurar CORS para ambiente hospedado
 app.use(cors({
-    origin: 'http://localhost:3000', // Permitir requisições do frontend local
+    origin: 'https://converteai.io', // Permitir requisições do domínio hospedado
     methods: ['POST', 'GET'],       // Métodos permitidos
     allowedHeaders: ['Content-Type'], // Cabeçalhos permitidos
 }));
 
-// Verificar e criar diretórios necessários
-const convertedDir = path.join(process.cwd(), 'uploads', 'converted');
-if (!fs.existsSync(convertedDir)) fs.mkdirSync(convertedDir, { recursive: true });
+// Garantir que o diretório uploads/converted exista
+const __dirname = path.resolve(); // Resolve o diretório atual
+const convertedDir = path.join(__dirname, 'uploads', 'converted');
+const uploadDir = path.join(__dirname, 'uploads');
 
-if (!fs.existsSync('uploads')) fs.mkdirSync('uploads');
+// Criar os diretórios necessários se não existirem
+if (!fs.existsSync(convertedDir)) fs.mkdirSync(convertedDir, { recursive: true });
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
 // Middleware
 app.use(express.json());
@@ -31,7 +34,7 @@ app.use(express.json());
 // Configuração do armazenamento com Multer
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads');
+        cb(null, uploadDir);
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + '-' + file.originalname);
@@ -51,16 +54,16 @@ const upload = multer({
 // Rota de upload
 app.post('/upload', upload.single('file'), async (req, res) => {
     console.log('Requisição recebida na rota /upload');
-    console.log('Headers:', req.headers); // Log dos cabeçalhos
-    console.log('Body:', req.body);       // Log do corpo da requisição
-    console.log('File:', req.file);       // Log do arquivo recebido
+    console.log('Headers:', req.headers);
+    console.log('Body:', req.body);
+    console.log('File:', req.file);
 
     if (!req.file) {
         return res.status(400).json({ message: 'Nenhum arquivo enviado' });
     }
 
     try {
-        const filePath = path.join(process.cwd(), 'uploads', req.file.filename);
+        const filePath = path.join(uploadDir, req.file.filename);
 
         // Extrai texto do PDF
         const pdfText = await extractPdf(filePath);
@@ -70,7 +73,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 
         res.json({
             message: 'Conversão realizada com sucesso!',
-            downloadUrl: `http://localhost:5000/download/${path.basename(wordFilePath)}`
+            downloadUrl: `https://converteai.io/download/${path.basename(wordFilePath)}`
         });
     } catch (error) {
         console.error('Erro durante o processamento:', error.message, error.stack);
@@ -81,7 +84,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 // Rota de download
 app.get('/download/:filename', (req, res) => {
     const filename = req.params.filename;
-    const filePath = path.join(process.cwd(), 'uploads', 'converted', filename);
+    const filePath = path.join(convertedDir, filename);
 
     res.download(filePath, (err) => {
         if (err) {
@@ -101,7 +104,7 @@ app.use((err, req, res, next) => {
 });
 
 // Iniciar o servidor
-const PORT = 5000;
-app.listen(PORT, () => {
+const PORT = 5000; // Certifique-se de que a porta 5000 esteja aberta no firewall
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
