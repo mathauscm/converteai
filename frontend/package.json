@@ -1,24 +1,65 @@
 {
-  "name": "frontend",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "converteai-frontend",
+  "version": "2.0.0",
+  "description": "Modern React frontend for PDF to Word conversion service",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
+    "test:ci": "CI=true react-scripts test --coverage --watchAll=false",
+    "eject": "react-scripts eject",
+    "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint src/ --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "analyze": "npm run build && npx bundle-analyzer build/static/js/*.js",
+    "serve": "serve -s build",
+    "docker:build": "docker build -t converteai-frontend .",
+    "docker:run": "docker run -p 3000:3000 converteai-frontend"
   },
-  "engines": {
-    "node": "v18.20.5"
+  "keywords": [
+    "react",
+    "pdf",
+    "word",
+    "conversion",
+    "frontend",
+    "ui"
+  ],
+  "author": {
+    "name": "Matheus Carvalho",
+    "email": "developer@mathaus.dev",
+    "url": "https://mathaus.dev"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "license": "MIT",
   "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "axios": "^1.7.9",
-    "react-dom": "^19.0.0",
-    "react-scripts": "^5.0.1"
+    "react-dropzone": "^14.2.9",
+    "react-hot-toast": "^2.4.1",
+    "framer-motion": "^11.15.0",
+    "lucide-react": "^0.456.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^18.3.17",
+    "@types/react-dom": "^18.3.5",
+    "eslint": "^8.57.1",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "prettier": "^3.4.1",
+    "react-scripts": "5.0.1",
+    "serve": "^14.2.4",
+    "web-vitals": "^4.2.4"
   },
   "browserslist": {
     "production": [
@@ -32,7 +73,37 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
-  }
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/index.js",
+      "!src/reportWebVitals.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 70,
+        "functions": 70,
+        "lines": 70,
+        "statements": 70
+      }
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "rules": {
+      "no-unused-vars": "warn",
+      "no-console": "warn"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seu-usuario/converteai.git"
+  },
+  "bugs": {
+    "url": "https://github.com/seu-usuario/converteai/issues"
+  },
+  "homepage": "https://converteai.io"
 }

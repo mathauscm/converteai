@@ -1,115 +1,224 @@
-<<<<<<< HEAD
-# converteai
-Conversor de formatos
-=======
-# **Converte AI**
+# 🚀 ConverteAI
 
-**Converte AI** é uma aplicação que permite converter arquivos PDF em documentos Word de forma rápida e fácil. A aplicação possui uma interface intuitiva em React no frontend e uma API Node.js no backend para processar os arquivos.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
+[![React Version](https://img.shields.io/badge/react-%3E%3D18.0.0-blue)](https://reactjs.org/)
 
----
+**ConverteAI** é uma aplicação web moderna que permite converter arquivos PDF em documentos Word (.docx) de forma rápida, segura e eficiente. Com uma interface intuitiva e processamento otimizado, é a solução ideal para suas necessidades de conversão de documentos.
 
-## 🌟 **Funcionalidades**
-- Upload de arquivos PDF.
-- Conversão de PDFs para Word.
-- Download do arquivo convertido.
+## ✨ Funcionalidades
 
----
+- 📄 **Conversão PDF para Word** - Mantém formatação e estrutura
+- 🚀 **Upload rápido** - Interface drag-and-drop intuitiva
+- 🔒 **Segurança** - Rate limiting e validação robusta
+- 📱 **Responsivo** - Funciona em desktop e mobile
+- ⚡ **Performance** - Processamento otimizado e cache inteligente
+- 🐳 **Docker** - Deploy simplificado com containers
 
-## 🛠️ **Pré-requisitos**
-Certifique-se de ter as ferramentas abaixo instaladas:
-- **Node.js** (v18 ou superior)
-- **npm** ou **yarn**
-- **Git**
+## 🛠️ Tecnologias
 
----
+### Backend
+- **Node.js** - Runtime JavaScript
+- **Express** - Framework web
+- **pdf-parse** - Extração de texto de PDFs
+- **docx** - Geração de documentos Word
+- **Multer** - Upload de arquivos
+- **Helmet** - Segurança HTTP
 
-## 📁 **Estrutura do Projeto**
-```plaintext
-ConverteAI/
-├── backend/          # API em Node.js para conversão de arquivos
-│   ├── src/
-│   │   └── server.js # Lógica do servidor
-│   ├── files/        # Armazena arquivos temporários gerados
-│   ├── package.json
-│   └── ...
-├── frontend/         # Interface do usuário em React
-│   ├── src/
-│   │   ├── App.js
-│   │   ├── services/
-│   │   │   └── api.js # Chamadas à API do backend
-│   │   └── styles/
-│   │       └── App.css
-│   ├── package.json
-│   └── ...
-├── .gitignore        # Ignora arquivos desnecessários para o repositório
-└── README.md         # Este arquivo
+### Frontend
+- **React 18** - Interface de usuário
+- **Axios** - Cliente HTTP
+- **CSS Modules** - Estilização modular
+- **React Hooks** - Gerenciamento de estado
 
+### DevOps
+- **Docker** - Containerização
+- **Docker Compose** - Orquestração local
+- **GitHub Actions** - CI/CD
+- **ESLint** - Linting de código
 
+## 🚀 Instalação e Execução
 
-🚀 Como Rodar o Projeto
-1. Clone o Repositório
+### Pré-requisitos
 
-git clone https://github.com/seu-usuario/converte-ai.git
+- Node.js (v18.0.0 ou superior)
+- npm ou yarn
+- Docker (opcional)
 
-cd converte-ai
+### 1. Clone o repositório
 
-2. Configuração do Backend
-Navegue até a pasta backend:
+```bash
+git clone https://github.com/seu-usuario/converteai.git
+cd converteai
+```
 
+### 2. Configuração com Docker (Recomendado)
+
+```bash
+# Copie o arquivo de exemplo das variáveis de ambiente
+cp .env.example .env
+
+# Execute com docker-compose
+docker-compose up --build
+```
+
+A aplicação estará disponível em:
+- Frontend: http://localhost:3000
+- Backend: http://localhost:5000
+
+### 3. Configuração Manual
+
+#### Backend
+
+```bash
 cd backend
 
-Instale as dependências:
-
-npm install
-Inicie o servidor:
-
-npm start
-O servidor será iniciado em http://localhost:5000.
-
-3. Configuração do Frontend
-Navegue até a pasta frontend:
-
-cd ../frontend
-
-Instale as dependências:
-
+# Instale as dependências
 npm install
 
-Inicie o servidor:
+# Configure as variáveis de ambiente
+cp .env.example .env
 
+# Execute o servidor
+npm run dev
+```
+
+#### Frontend
+
+```bash
+cd frontend
+
+# Instale as dependências
+npm install
+
+# Configure as variáveis de ambiente
+cp .env.example .env
+
+# Execute a aplicação
 npm start
-Acesse o frontend em http://localhost:3000.
+```
 
+## 🔧 Configuração
 
-💻 Tecnologias Utilizadas
-Frontend: React, Axios, HTML, CSS.
-Backend: Node.js, Express, pdf-lib, docx.
-Outros: CORS, File Upload.
+### Variáveis de Ambiente
 
+#### Backend (.env)
+```env
+NODE_ENV=development
+PORT=5000
+CORS_ORIGIN=http://localhost:3000
+MAX_FILE_SIZE=10485760
+RATE_LIMIT_WINDOW=900000
+RATE_LIMIT_MAX=100
+```
 
-🤝 Como Contribuir
+#### Frontend (.env)
+```env
+REACT_APP_API_URL=http://localhost:5000
+REACT_APP_MAX_FILE_SIZE=10485760
+```
 
-Faça um fork do repositório.
+## 📖 API Documentation
 
-Crie uma nova branch para suas alterações:
-git checkout -b minha-feature
+### POST /api/upload
 
-Faça suas alterações e adicione os commits:
-git commit -m "Minha nova feature"
+Converte um arquivo PDF para Word.
 
-Envie suas alterações:
-git push origin minha-feature
+**Request:**
+- Content-Type: `multipart/form-data`
+- Body: `file` (arquivo PDF)
 
-Abra um pull request.
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Conversão realizada com sucesso!",
+  "downloadUrl": "/api/download/filename.docx",
+  "fileId": "unique-file-id"
+}
+```
 
+### GET /api/download/:filename
 
-📄 Licença
+Baixa o arquivo convertido.
 
-Este projeto está licenciado sob a licença MIT. Consulte o arquivo LICENSE para mais informações.
+**Response:**
+- Content-Type: `application/vnd.openxmlformats-officedocument.wordprocessingml.document`
+- Body: Arquivo Word binário
 
-📬 Contato
-Em caso de dúvidas ou sugestões, entre em contato:
+## 🧪 Testes
 
-Email: developer@mathaus.dev
-© 2024 mathaus.dev
->>>>>>> e7201cc (Primeiro commit do projeto ConverteAI)
+```bash
+# Backend
+cd backend
+npm test
+
+# Frontend
+cd frontend
+npm test
+
+# Testes de integração
+npm run test:integration
+```
+
+## 📦 Deploy
+
+### Produção com Docker
+
+```bash
+# Build das imagens
+docker-compose -f docker-compose.prod.yml build
+
+# Deploy
+docker-compose -f docker-compose.prod.yml up -d
+```
+
+### Deploy Manual
+
+1. Configure as variáveis de ambiente para produção
+2. Build do frontend: `npm run build`
+3. Execute o backend: `npm start`
+4. Configure nginx ou apache como proxy reverso
+
+## 🤝 Contribuindo
+
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## 📋 Roadmap
+
+- [ ] Suporte a múltiplos formatos (Excel, PowerPoint)
+- [ ] OCR para PDFs escaneados
+- [ ] API de conversão em lote
+- [ ] Dashboard de usuário
+- [ ] Integração com cloud storage
+- [ ] Conversão em tempo real
+
+## 🐛 Problemas Conhecidos
+
+- Arquivos PDF muito grandes (>10MB) podem demorar para processar
+- PDFs com imagens complexas podem perder formatação
+
+## 📄 Licença
+
+Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+## 👨‍💻 Autor
+
+**Matheus Carvalho**
+- Website: [mathaus.dev](https://mathaus.dev)
+- Email: developer@mathaus.dev
+- GitHub: [@seu-usuario](https://github.com/seu-usuario)
+
+## 🙏 Agradecimentos
+
+- [pdf-parse](https://github.com/modesty/pdf-parse) - Extração de texto de PDFs
+- [docx](https://github.com/dolanmiu/docx) - Geração de documentos Word
+- [React](https://reactjs.org/) - Framework frontend
+
+---
+
+⭐ **Se este projeto foi útil para você, considere dar uma estrela!**
