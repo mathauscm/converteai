@@ -211,7 +211,7 @@ Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICE
 **Matheus Carvalho**
 - Website: [mathaus.dev](https://mathaus.dev)
 - Email: developer@mathaus.dev
-- GitHub: [@seu-usuario](https://github.com/seu-usuario)
+- GitHub: [@seu-usuario](https://github.com/mathauscm)
 
 ## 🙏 Agradecimentos
 
