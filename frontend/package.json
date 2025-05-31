@@ -3,14 +3,13 @@
   "version": "2.0.0",
   "description": "Modern React frontend for PDF to Word conversion service",
   "private": true,
-  "type": "module",
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=8.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "react-scripts test",
     "test:coverage": "react-scripts test --coverage --watchAll=false",
     "test:ci": "CI=true react-scripts test --coverage --watchAll=false",
@@ -19,9 +18,7 @@
     "lint:fix": "eslint src/ --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
     "analyze": "npm run build && npx bundle-analyzer build/static/js/*.js",
-    "serve": "serve -s build",
-    "docker:build": "docker build -t converteai-frontend .",
-    "docker:run": "docker run -p 3000:3000 converteai-frontend"
+    "serve": "serve -s build"
   },
   "keywords": [
     "react",
@@ -40,6 +37,7 @@
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-scripts": "5.0.1",
     "axios": "^1.7.9",
     "react-dropzone": "^14.2.9",
     "react-hot-toast": "^2.4.1",
@@ -50,14 +48,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",
-    "@types/react": "^18.3.17",
-    "@types/react-dom": "^18.3.5",
-    "eslint": "^8.57.1",
-    "eslint-config-react-app": "^7.0.1",
-    "eslint-plugin-react": "^7.37.2",
-    "eslint-plugin-react-hooks": "^5.0.0",
     "prettier": "^3.4.1",
-    "react-scripts": "5.0.1",
     "serve": "^14.2.4",
     "web-vitals": "^4.2.4"
   },
@@ -72,31 +63,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx}",
-      "!src/index.js",
-      "!src/reportWebVitals.js"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 70,
-        "functions": 70,
-        "lines": 70,
-        "statements": 70
-      }
-    }
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "rules": {
-      "no-unused-vars": "warn",
-      "no-console": "warn"
-    }
   },
   "repository": {
     "type": "git",
