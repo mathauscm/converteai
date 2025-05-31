@@ -7,7 +7,8 @@ import FileUpload from './components/FileUpload/FileUpload';
 import Footer from './components/Footer/Footer';
 import Features from './components/Features/Features';
 
-import './styles/globals.css';
+// Corrigir import do CSS
+import './styles/global.css';
 
 function App() {
   // Add padding-top to body to account for fixed header

@@ -15,7 +15,7 @@ import {
 
 import { uploadFile } from '../../services/api';
 import { formatFileSize, validateFileType } from '../../utils/fileUtils';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+// LoadingSpinner removido temporariamente - usando Loader2 do Lucide React
 
 import styles from './FileUpload.module.css';
 
